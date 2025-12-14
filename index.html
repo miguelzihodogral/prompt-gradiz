@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Prompt Gradiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Garante que o padding não afeta a largura total */
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #d4edda;
+            background-color: #e2f0e6;
+            border-radius: 4px;
+        }
+        #promptGerado {
+            white-space: pre-wrap; /* Preserva quebras de linha */
+            word-break: break-all;
+            font-size: 14px;
+            color: #333;
+        }
+        .copiar {
+            margin-top: 10px;
+            background-color: #28a745;
+        }
+        .copiar:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📝 Gerador de Prompt de Prospecção</h2>
+        
+        <label for="nomeEmpresa">Nome da Empresa:</label>
+        <input type="text" id="nomeEmpresa" placeholder="Ex: Floricultura Sempre Bela" required>
+
+        <label for="meioContato">Meio de Contato:</label>
+        <select id="meioContato">
+            <option value="email">E-mail</option>
+            <option value="whatsapp">WhatsApp</option>
+        </select>
+
+        <button onclick="gerarPrompt()">Gerar Prompt</button>
+
+        <div id="resultado" style="display: none;">
+            <h3>Prompt Gerado:</h3>
+            <pre id="promptGerado"></pre>
+            <button class="copiar" onclick="copiarPrompt()">Copiar Prompt</button>
+        </div>
+    </div>
+
+    <script>
+        function gerarPrompt() {
+            const nomeEmpresa = document.getElementById('nomeEmpresa').value.trim();
+            const meioContato = document.getElementById('meioContato').value;
+            const resultadoDiv = document.getElementById('resultado');
+            const promptGeradoPre = document.getElementById('promptGerado');
+            let prompt = '';
+
+            if (nomeEmpresa === '') {
+                alert('Por favor, insira o nome da empresa.');
+                return;
+            }
+
+            // Prompts base (como solicitado)
+            const promptEmail = `Olá equipe ${nomeEmpresa}, vim pelo site de vocês, eu acho que podemos trazer mais transparência e confiança para os seus clientes com um site ainda mais profissional, o que acham? Posso fazer isso por 1000 reais você paga metade antes e metade depois do site! Se não gostar do nosso valor podemos ir negociando no número: (11) 94804-9064. E fale que veio pelo Davi Aguardo a resposta no número…`;
+            
+            // O asterisco (*) no WhatsApp faz o texto ficar em negrito
+            const promptWhatsapp = `Olá equipe *${nomeEmpresa}*, vim pelo site de vocês, eu acho que podemos trazer mais transparência e confiança para os seus clientes com um site ainda mais profissional, o que acham? Posso fazer isso por 1000 reais você paga metade antes e metade depois do site! Se não gostar do nosso valor podemos ir negociando no número: (11) 94804-9064. Aguardo a resposta…`;
+
+            if (meioContato === 'email') {
+                prompt = promptEmail;
+            } else if (meioContato === 'whatsapp') {
+                prompt = promptWhatsapp;
+            }
+
+            promptGeradoPre.textContent = prompt;
+            resultadoDiv.style.display = 'block';
+        }
+
+        function copiarPrompt() {
+            const promptText = document.getElementById('promptGerado').textContent;
+            
+            // Usa a API de Clipboard para copiar o texto
+            navigator.clipboard.writeText(promptText).then(() => {
+                alert('Prompt copiado para a área de transferência!');
+            }).catch(err => {
+                // Fallback para navegadores que não suportam a API de Clipboard
+                console.error('Erro ao copiar: ', err);
+                alert('Erro ao copiar o prompt. Por favor, selecione e copie manualmente.');
+            });
+        }
+    </script>
+
+</body>
+</html>
